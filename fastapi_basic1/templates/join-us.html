@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI</title>
+    <header>
+        <h1>회원 가입</h1>
+    </header>
+</head>
+<body>
+    <h1>회원 정보 입력</h1>
+    <form action="/join" method="post">
+        <label>성명: <input type="text" name="name" required value="홍길동"></label><br><br>
+        <label>주소: <input type="text" name="address" required value="서울 강남구"></label><br><br>
+        <label>전화: <input type="text" name="phone" required value="010-1111-2222"></label><br><br>
+        <label>Email: <input type="email" name="email" required value="abc@def.com"></label><br><br>
+        <label>나이: <input type="number" name="age" required value="40"></label><br><br>
+        <label>성별:
+            <select name="gender" required>
+                <option value="">선택</option>
+                <option value="남성">남성</option>
+                <option value="여성">여성</option>
+                <option value="기타">기타</option>
+            </select>
+        </label><br><br>
+        <button type="submit">가입하기</button>
+    </form>
+</body>
+</html>

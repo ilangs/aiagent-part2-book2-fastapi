@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI</title>
+</head>
+<body>
+    <h1>개인 정보 입력</h1>
+    <form action="http:127.0.0.1:8000/hello" method="get">
+        <legend>GET으로 요청</legend>
+        <label for="">성명: </label>
+        <input type="text" name="name" value="get lee">
+        <input type="submit" value="전송">
+    </form>
+    <br>
+    <form action="http:127.0.0.1:8000/hello" method="post">
+        <legend>POST로 요청</legend>
+        <label for="">성명: </label>
+        <input type="text" name="name" value="post lee">
+        <label for="">비밀번호: </label>
+        <input type="password" name="password" value="12345">
+        <input type="submit" value="전송">
+    </form>
+</body>
+</html>

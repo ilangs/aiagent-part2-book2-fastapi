@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax</title>
+</head>
+<body>
+    <h1>Ajax란?</h1>
+
+<script>
+    console.log ("Hello javascript world!");
+
+    var BASE_URL = "http://127.0.0.1:8000"
+
+    // Ajax를 가능하게 사는 객체 생성
+    var xhr = new XMLHttpRequest();
+    console.dir(xhr);
+
+    // 후속으로 결과를 처리하는 함수
+    xhr.onload = function(event) {
+        console.log(xhr.reponseText)
+    }
+
+    // 요청할 타겟을 지정 (GET 방식)
+    // xhr.open("GET",BASE_URL+"/", true);
+    //실행 신호
+    // xhr.send();
+
+    // 요청할 타겟을 지정 (POST 방식)
+    xhr.open("POST", BASE_URL+"/", true);
+    // 중요: POST 경우 반드시 추가, open 함수 아래에 위치
+    xhr.setRequestHeader("Content-type", "application/json");
+
+    // Json 데이터로 변경할 Object (객체) 준비
+    dataObj = {
+        text : "Hello FatAPI Server"
+    }
+    // 실행 신호
+    // 자바스크립트 객체를 JSON 문자열로 변환 후 전송
+    xhr.send(JSON.stringify(dataObj));
+
+</script>
+</body>
+</html>
