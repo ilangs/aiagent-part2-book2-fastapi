@@ -11,34 +11,22 @@ app.mount("/public", StaticFiles(directory="public", html=True), name="public")
 def root() :
     return {"message": "Hello! FastAPI"}
 
-# 1. 데이터 규격 정의 (Pydantic 모델)
-class CalcData(BaseModel):
-    a: int
-    b: int
-    oper: str
-
 # addition(+), subtraction(-), multiplication(*), division(/)
 
-# 2. POST 방식으로 변경
-@app.post("/calc")
-def calc_post(data: CalcData) :
-    # data 객체에서 값을 꺼낸다.
-    a = data.a
-    b = data.b
-    oper = data.oper
-    
+@app.get("/calc/{oper}/{a}/{b}")
+def calc(oper: str, a: int, b: int) :
     if oper == "add":
-        print (f"POST 덧셈: {a} + {b} = {a+b}")
+        print (f"덧셈 결과: {a} + {b} = {a+b}")
         return a + b
     elif oper == "sub" :
-        print (f"POST 뺄셈: {a} - {b} = {a-b}")
+        print (f"뺄셈 결과: {a} - {b} = {a-b}")
         return a - b
     elif oper == "mul" :
-        print (f"POST 곱셈: {a} * {b} = {a*b}")
+        print (f"곱셈 결과: {a} * {b} = {a*b}")
         return a * b
     elif oper == "div" :
         if b == 0 :
             return "Error(0으로 나눌 수 없음)"
         else :
-            print (f"POST 나눗셈: {a} / {b} = {a/b}")
+            print (f"나눗셈 결과: {a} / {b} = {a/b}")
             return round(a/b, 3) 

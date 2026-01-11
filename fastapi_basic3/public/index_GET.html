@@ -33,45 +33,40 @@
         
         var divResult= document.getElementById("result");
 
-        buttonBtn.onclick = async function() {
+        buttonBtn.onclick = function() {
             var a = inputA.value;
             var b = inputB.value;
             var oper = selectOper.value;
 
-            // 1. 숫자 검증
+            console.log("Button Click!", a, oper, b)
+
+            // 숫자 검증
             if (a === "" || b === "" || isNaN(a) || isNaN(b)) {
                 divResult.innerText = "숫자만 입력하세요.";
                 return;
             }
 
-            // 2. 서버로 보낼 데이터를 객체로 만듦 (Pydantic 모델과 이름을 맞춰야 함)
-            var payload = {
-                a: parseInt(a),
-                b: parseInt(b),
-                oper: oper
-            };
+            // url 구성
+            var url = `${Base_url}/calc/${oper}/${a}/${b}`
+            console.log("요청 url", url) 
 
-            try {
-                // 3. fetch를 이용한 POST 요청
-                var response = await fetch(`${Base_url}/calc`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json' // JSON 데이터를 보낸다는 선언
-                    },
-                    body: JSON.stringify(payload) // 데이터를 문자열(봉투)로 변환
-                });
+            // Ajax 객체 생성 및 요청 준비
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
 
-                if (response.ok) {
-                    var result = await response.json(); // 응답 데이터 받기
-                    console.log("서버 응답:", result);
-                    divResult.textContent = "결과: " + result;
-                } else {
-                    divResult.textContent = "서버 오류 발생";
+            // 응답처리
+            xhr.onload = function () {
+                if (xhr.status===200) {
+                    console.log("서버 응답: ", xhr.responseText);
+                    divResult.textContent = "결과: " + xhr.responseText;
                 }
-            } catch (error) {
-                console.error("통신 에러:", error);
-                divResult.textContent = "서버 연결에 실패했습니다.";
-            }
+                else {
+                    console.error("서버오류:", xhr.status);
+                    divResult.textContent = xhr.responseText;
+                }
+            };
+            // 요청 전송
+            xhr.send();
         };
     </script>
 </body>

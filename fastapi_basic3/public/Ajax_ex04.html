@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Path Parameter</title>
+</head>
+<body>
+    <h1>초등학교 저학년 사칙연산 계산기</h1>
+    항1: <input type="text" id="a" value="10"><br>
+    항2: <input type="text" id="b" value="3"><br>
+    연산자: <select id="oper">
+        <option value="plus">+</option>
+        <option value="min">-</option>
+        <option value="mult">*</option>
+        <option value="div">/</option>
+    </select>
+
+    <button id="btn">계산</button>
+
+    <div>결과: <span id="result">-</span></div>
+    <div>상태: <span id="status">대기</span></div>
+
+    <script>
+        console.log("XMLHttpRequest Ajax 계산기 시작");
+
+        var BASE_URL = "http://127.0.0.1:8000";
+
+        // btn을 클릭하면 항1, 항2의 값을 서버에 전송하고 결과값을 돌려 받기
+        var inputA = document.getElementById("a")
+        var inputB = document.getElementById("b")
+        var selectOper = document.getElementById("oper")
+        var buttonBtn = document.getElementById("btn")
+
+        var resultSpan = document.getElementById("result");
+        var statusSpan = document.getElementById("status");
+
+        buttonBtn.onclick = function(event) {
+            // 1. 값 가져오기
+            var a = inputA.value
+            var b = inputB.value
+            var oper = selectOper.value
+
+            console.log("버튼 눌림", a, b, oper)
+
+            // 2. 숫자 검증
+            var na = Number(a);
+            var nb = Number(b);
+
+            if (Number.isNaN(na) || Number.isNaN(nb)) {
+                statusSpan.textContent = "입력 오류";
+                resultSpan.textContent = "숫자만 입력하세요.";
+                return; // 함수 종료
+            }
+
+            // 오늘 배운 Ajax를 이용해서 FastAPI 서버와 통신되는 기능 구현
+
+            // 3. Ajax 요청 로직, 요청 URL 구성 (Path Parameter)
+            var url = BASE_URL + "/" + oper + "/" + na + "/" + nb;
+            console.log("요청 URL:", url);
+
+            // Ajax 객체 생성
+            var xhttp = new XMLHttpRequest();
+
+            // 요청 준비
+            xhttp.open("GET", url, true);
+            // console.dir(xhttp)
+
+            // 응답 처리
+            xhttp.onload = function () {
+                if (xhttp.status === 200) {
+                    console.log("서버 응답:", xhttp.responseText);
+                    resultSpan.textContent = xhttp.responseText;
+                    statusSpan.textContent = "성공";
+                } else {
+                    console.error("서버 오류:", xhttp.status);
+                    resultSpan.textContent = xhttp.responseText;
+                    statusSpan.textContent = "오류 (" + xhttp.status + ")";
+                }
+            };
+
+            // 네트워크 오류 처리
+            xhttp.onerror = function () {
+                statusSpan.textContent = "네트워크 오류";
+                resultSpan.textContent = "-";
+            };
+
+            // 요청 전송
+            xhttp.send(null);
+        }; // onclick 함수 종료
+    </script>
+</body>
+</html>
